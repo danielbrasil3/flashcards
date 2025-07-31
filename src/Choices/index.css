@@ -1,0 +1,18 @@
+#choiceButtons{
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+
+#btn-Aprendeu{
+    background-color: rgb(28, 145, 28);
+}
+
+#btn-NaoAprendeu{
+    background-color: rgb(145, 28, 28);
+}
+
+#btn-Pular{
+    background-color: rgb(28, 126, 145);
+}
