@@ -69,8 +69,49 @@ function App() {
   ]);
   const [indexAtual, setIndexAtual] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [choicesHistory, setchoicesHistory] = useState(
+    {
+      aprendeu: [],
+      nao_sabe: [],
+      pulou: [],
+    }
+  )
+  const totalQuestions = questions.length - 1;
+  const respondidas = choicesHistory.aprendeu.length +
+                      choicesHistory.nao_sabe.length +
+                      choicesHistory.pulou.length;
+  if (indexAtual > totalQuestions) {
+    setIndexAtual(0);
+    setShowAnswer(false);
+    setchoicesHistory({
+      aprendeu: [],
+      nao_sabe: [],
+      pulou: [],
+    });
+  }
+  const porcentagem = totalQuestions < respondidas ? 0 : (respondidas / totalQuestions) * 100;
+  console.log(choicesHistory.aprendeu);
+  
 
-  const handleNext = () => {
+
+
+  const handleNext = (buttonIndex) => {
+    if (buttonIndex == 1){
+      setchoicesHistory(prevState => ({
+        ...prevState,
+        aprendeu: [...prevState.aprendeu, indexAtual],
+      }));
+    } else if (buttonIndex == 2){
+      setchoicesHistory(prevState => ({
+        ...prevState,
+        nao_sabe: [...prevState.nao_sabe, indexAtual],
+      }));
+    } else {
+      setchoicesHistory(prevState => ({
+        ...prevState,
+        pulou: [...prevState.pulou, indexAtual],
+      }));
+    }
     setShowAnswer(false);
     setIndexAtual((prev) => (prev + 1) % questions.length);
   };
@@ -82,7 +123,7 @@ function App() {
       <h1>React Questions</h1>
       <h3>Test, rate and improve your React knowledge with these questions.</h3>
 
-      <ProgressBar/>
+      <ProgressBar choicesHistory={choicesHistory} porcentagem={porcentagem}/>
       <Questions questions={questions[indexAtual]} showAnswer={showAnswer} setShowAnswer={setShowAnswer}/>
       <Choices handle={handleNext}/>
     </>
